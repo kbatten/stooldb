@@ -2,7 +2,7 @@
 
 import sys
 
-import glue
+from stooldb import glue
 
 try:
     filename = sys.argv[1]
