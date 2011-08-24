@@ -2,19 +2,27 @@
 
 import sys
 
-from stooldb import glue
+import stooldb
 
 try:
-    filename = sys.argv[1]
-except:
-    filename = "test.couch"
+    server_db = sys.argv[1]
+    try:
+        server, dbname = server_db.rsplit("/",1)
+    except ValueError:
+        server = "."
+        dbname = server_db
 
-print "opening", filename
-fd = open(filename, "rb")
+    # remove .couch if its appended
+    dbname = dbname.rsplit(".",1)[0]
+except Exception as ex:
+#    server = "/Users/kbatten/Library/Application Support/CouchbaseServer/test"
+    server = "."
+    dbname = "test"
 
-header = glue.read_header(fd)
-if not header:
-    sys.exit()
+print "server:",server
+print "db:",dbname
 
-print "found header"
-print header
+couch = stooldb.Server(server)
+db = couch[dbname]
+
+doc = db["30cce3c46e10bbbfaadb86bed1000fd0"]

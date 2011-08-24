@@ -52,6 +52,16 @@ def _get_binary_size(bin):
         return 1 + 4
     if tag == NIL_EXT:
         return 1
+    if tag == LIST_EXT:
+        length = struct.unpack(">I",data[0:4])[0]
+        offset = 4
+        # length + 1 because of tail
+        for i in range(length + 1):
+            offset += _get_binary_size(data[offset:])
+        return 1 + offset
+    if tag == BINARY_EXT:
+        length = struct.unpack(">I",data[0:4])[0]
+        return 1 + 4 + length
 
     raise Exception("Unknown erlang term type (tag: {0})".format(tag))
 
@@ -84,5 +94,17 @@ def binary_to_term(bin):
         return struct.unpack(">I",data[0:4])[0]
     if tag == NIL_EXT:
         return None
+    if tag == LIST_EXT:
+        length = struct.unpack(">I",data[0:4])[0]
+        elements = []
+        offset = 4
+        # length + 1 because of tail
+        for i in range(length+1):
+            elements.append(binary_to_term(data[offset:]))
+            offset += _get_binary_size(data[offset:])
+        return elements
+    if tag == BINARY_EXT:
+        length = struct.unpack(">I",data[0:4])[0]
+        return data[4:4+length]
 
     raise Exception("Unknown erlang term type (tag: {0})".format(tag))
