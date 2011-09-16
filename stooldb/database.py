@@ -7,6 +7,11 @@ class Database(object):
         self.couch_path = path + ".couch"
 
 
+    def __repr__(self):
+        reader = CouchdbFileReader(self.couch_path)
+        return str({"path":self.couch_path, "header":reader.header})
+
+
     def __getitem__(self, key):
         return self.get(key)
 
@@ -41,8 +46,8 @@ class Database(object):
 
     def get(self, id, default=None, **options):
         reader = CouchdbFileReader(self.couch_path)
-        print reader.header
-        return Document({},"","")
+        data = reader.get(id)
+        return Document(data, data["_id"], data["_rev"])
 
 
     def get_attachment(self, id_or_doc, filename, default=None):

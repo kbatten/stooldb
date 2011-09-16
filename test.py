@@ -9,20 +9,25 @@ try:
     try:
         server, dbname = server_db.rsplit("/",1)
     except ValueError:
-        server = "."
+        server = "server/"
         dbname = server_db
 
     # remove .couch if its appended
     dbname = dbname.rsplit(".",1)[0]
+    docid=""
 except Exception as ex:
 #    server = "/Users/kbatten/Library/Application Support/CouchbaseServer/test"
-    server = "."
-    dbname = "test"
+    server = "server/"
+    dbname = "autodiscovery"
+    docid="03713cb29a236ae1b0c90139d000160f"
 
-print "server:",server
-print "db:",dbname
 
+print "fetching server",server
 couch = stooldb.Server(server)
+print couch
+print "fetching db",dbname
 db = couch[dbname]
-
-doc = db["30cce3c46e10bbbfaadb86bed1000fd0"]
+print db
+print "fetching doc",docid
+doc = db[docid]
+print doc

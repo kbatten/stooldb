@@ -8,6 +8,8 @@ class Server(object):
     def __init__(self, server, full_commit=True, session=None):
         self.server = os.path.abspath(server)
 
+    def __repr__(self):
+        return self.server
 
     def __getitem__(self, key):
         return Database(os.path.join(self.server, key))

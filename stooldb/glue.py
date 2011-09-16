@@ -6,8 +6,10 @@ import os
 import struct
 from erlang import *
 
-SIZE_BLOCK = 4096
 
+#### couch_file.erl ####
+
+SIZE_BLOCK = 4096
 
 # read the header from a couch file
 # start searching at the last full block
@@ -99,3 +101,16 @@ def remove_block_prefixes(block_offset, bin):
         return data_block + remove_block_prefixes(0, rest)
     else:
         return bin
+
+
+#### couch_db.erl ####
+def get_full_doc_info(db, id):
+    return get_full_doc_infos(db, [id])[0]
+
+def get_full_doc_infos(db, ids):
+    return lookup(db["fulldocinfo_by_id_btree"], ids)
+
+
+#### couch_btree.erl ####
+def lookup():
+    pass
