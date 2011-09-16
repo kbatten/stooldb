@@ -88,7 +88,11 @@ def calculate_total_read_len(block_offset, final_len):
         return final_len + ((final_len - block_left) / (SIZE_BLOCK - 1)) + x
     
 
-# TODO: find out what this is supposed to do
+# this removes the prefix data (1 byte) that is stored at the start of every block
+# 1) if we are at the very start of a block, remove the 0/1
+# 2) check how many bytes left in the block we have
+# 3) if the length of the data > the bytes left, read up to end of block
+#    then remove the block prefix from the rest of the data
 def remove_block_prefixes(block_offset, bin):
     if not bin:
         return []
