@@ -19,15 +19,16 @@ except Exception as ex:
 #    server = "/Users/kbatten/Library/Application Support/CouchbaseServer/test"
     server = "server/"
     dbname = "autodiscovery"
-    docid="03713cb29a236ae1b0c90139d000160f"
+#    docid="03713cb29a236ae1b0c90139d000160f"
+    docid="03713cb29a236ae1b0c90139d0000735"
 
 
 print "fetching server",server
 couch = stooldb.Server(server)
-print couch
+#print couch
 print "fetching db",dbname
 db = couch[dbname]
-print db
+#print db
 print "fetching doc",docid
 doc = db[docid]
-print doc
+#print doc
